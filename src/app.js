@@ -1,11 +1,8 @@
 const express = require('express');
+const { mainController } = require('./controllers');
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send({
-    message: 'Hello world!',
-  });
-});
+app.get('/', mainController);
 
 module.exports = app;
