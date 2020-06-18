@@ -1,4 +1,5 @@
-// Controller functions
+// eslint-disable-next-line
+const request = require('request');
 
 const mainController = (req, res) => {
   res.send({
@@ -6,11 +7,15 @@ const mainController = (req, res) => {
   });
 };
 
-const jokeController = (req, res) => {
-  res.send({
-    message: 'This is the all jokes endpoint',
+const jokesController = (req, res) =>
+  request('https://api.icndb.com/jokes', (error, jokesApiResponse) => {
+    if (error) {
+      console.log(error);
+    }
+
+    const parsedResponse = JSON.parse(jokesApiResponse.body);
+    res.send({ jokes: parsedResponse.value });
   });
-};
 
 const randomJokeController = (req, res) => {
   res.send({
@@ -26,7 +31,7 @@ const personalJokeController = (req, res) => {
 
 module.exports = {
   mainController,
-  jokeController,
+  jokesController,
   randomJokeController,
   personalJokeController,
 };

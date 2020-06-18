@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   mainController,
-  jokeController,
+  jokesController,
   randomJokeController,
   personalJokeController,
 } = require('./controllers');
@@ -10,7 +10,7 @@ const app = express();
 
 app.get('/', mainController);
 
-app.get('/jokes', jokeController);
+app.get('/jokes', jokesController);
 
 app.get('/joke/random', randomJokeController);
 
