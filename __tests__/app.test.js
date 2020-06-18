@@ -12,3 +12,39 @@ describe('GET / should respond with a welcome message', () => {
       });
   });
 });
+
+describe('GET /jokes should respond with a relevent message', () => {
+  it('Get /jokes should respond with: This is the all jokes endpoint', done => {
+    request(app)
+      .get('/jokes')
+      .then(res => {
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toEqual('This is the all jokes endpoint');
+        done();
+      });
+  });
+});
+
+describe('GET /joke/random responds with a relevent message', () => {
+  it('GET /random/joke should respond with: This is the random joke endpoint', done => {
+    request(app)
+      .get('/joke/random')
+      .then(res => {
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toEqual('This is the random joke endpoint');
+        done();
+      });
+  });
+});
+
+describe('GET /joke/random/personal/:first/:last responds with a relevent message', () => {
+  it('GET /joke/random/personal/:first/:last responds with: This is the personalised joke endpoint', done => {
+    request(app)
+      .get('/joke/random/personal/Guy/Garvey')
+      .then(res => {
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.message).toEqual('This is the personalised joke endpoint');
+        done();
+      });
+  });
+});
