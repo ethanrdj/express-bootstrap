@@ -30,14 +30,14 @@ const randomJokeController = (req, res) =>
 
 const personalJokeController = async (req, res) => {
   const { first, last } = req.params;
-
   try {
     const response = await axios.get(
-      `https://api.icndb.com/jokes/random?firstName=${first}&lastName=${last}&exclude=[excplicit]`,
+      `https://api.icndb.com/jokes/random?firstName=${first}&lastName=${last}&exclude=[explicit]`,
     );
 
     return res.send({ personalJoke: response.data.value });
   } catch (error) {
+    // eslint-disable-next-line
     console.log(error);
   }
 };
