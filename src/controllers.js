@@ -28,10 +28,18 @@ const randomJokeController = (req, res) =>
       console.log(error);
     });
 
-const personalJokeController = (req, res) => {
-  res.send({
-    message: 'This is the personalised joke endpoint',
-  });
+const personalJokeController = async (req, res) => {
+  const { first, last } = req.params;
+
+  try {
+    const response = await axios.get(
+      `https://api.icndb.com/jokes/random?firstName=${first}&lastName=${last}&exclude=[excplicit]`,
+    );
+
+    return res.send({ personalJoke: response.data.value });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {
