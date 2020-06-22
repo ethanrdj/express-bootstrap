@@ -5,6 +5,7 @@
 const request = require('supertest');
 const nock = require('nock');
 const app = require('../src/app');
+const mockData = require('../test-data/mock-data');
 
 describe('GET /  - Homepage', () => {
   it('GET / should respond with Hello world!', done => {
@@ -20,42 +21,15 @@ describe('GET /  - Homepage', () => {
 
 describe('GET /jokes', () => {
   it('should respond with a list of jokes', done => {
-    const mockResponse = {
-      type: 'success',
-      value: [
-        {
-          id: 1,
-          joke: 'i am a joke',
-          categories: [],
-        },
-        {
-          id: 2,
-          joke: 'i am another joke',
-          categories: [],
-        },
-      ],
-    };
-
     nock('https://api.icndb.com')
       .get('/jokes')
-      .reply(200, mockResponse);
+      .reply(200, mockData.jokesMock);
 
     request(app)
       .get('/jokes')
       .then(res => {
         expect(res.statusCode).toEqual(200);
-        expect(res.body.jokes).toEqual([
-          {
-            categories: [],
-            id: 1,
-            joke: 'i am a joke',
-          },
-          {
-            categories: [],
-            id: 2,
-            joke: 'i am another joke',
-          },
-        ]);
+        expect(res.body.jokes).toEqual(mockData.jokesMock.value);
         done();
       });
   });
@@ -76,28 +50,16 @@ describe('GET /jokes', () => {
 
 describe('GET /jokes/random', () => {
   it('should respond with a random joke', done => {
-    const mockResponse = {
-      type: 'success',
-      value: {
-        id: 115,
-        joke: 'i am a random joke',
-        categories: [],
-      },
-    };
     nock('https://api.icndb.com')
       .get('/jokes/random')
       .query({ exclude: '[explicit]' })
-      .reply(200, mockResponse);
+      .reply(200, mockData.randomJokesMock);
 
     request(app)
       .get('/jokes/random')
       .then(res => {
         expect(res.statusCode).toEqual(200);
-        expect(res.body.randomJoke).toEqual({
-          categories: [],
-          id: 115,
-          joke: 'i am a random joke',
-        });
+        expect(res.body.randomJoke).toEqual(mockData.randomJokesMock.value);
         done();
       });
   });
@@ -119,24 +81,16 @@ describe('GET /jokes/random', () => {
 
 describe('GET /jokes/random/personal/:first/:last', () => {
   it('should respond with a personal joke', done => {
-    const mockResponse = {
-      type: 'success',
-      value: {
-        id: 141,
-        joke: 'random joke about manchester codes',
-        categories: [],
-      },
-    };
     nock('https://api.icndb.com')
       .get('/jokes/random')
       .query({ exclude: '[explicit]', firstName: 'Ethan', lastName: 'Davis' })
-      .reply(200, mockResponse);
+      .reply(200, mockData.personalJokesMock);
 
     request(app)
       .get('/jokes/random/personal/Ethan/Davis')
       .then(res => {
         expect(res.statusCode).toEqual(200);
-        expect(res.body.personalJoke).toEqual(mockResponse.value);
+        expect(res.body.personalJoke).toEqual(mockData.personalJokesMock.value);
         done();
       });
   });
