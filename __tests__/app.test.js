@@ -5,7 +5,7 @@
 const request = require('supertest');
 const nock = require('nock');
 const app = require('../src/app');
-const mockData = require('../test-data/mock-data');
+const mockData = require('../data/mock-data');
 
 describe('GET /  - Homepage', () => {
   it('GET / should respond with the homepage', async () => {
